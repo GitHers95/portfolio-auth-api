@@ -24,3 +24,21 @@ class UserOut(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+# Schéma pour créer un produit (requête)
+class ProductCreate(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    is_available: bool = True
+
+# Schéma pour lire un produit (réponse)
+class ProductResponse(BaseModel):
+    id: int
+    name: str
+    description: str | None = None
+    price: float
+    is_available: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

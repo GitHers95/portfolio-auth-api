@@ -1,0 +1,7 @@
+venv/
+*.md
+*.pdf
+*.pyc
+__pycache__/
+.env.backup
+.git/
