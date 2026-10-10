@@ -1,4 +1,5 @@
 # Portfolio Auth API
+![CI Pipeline](https://github.com/GitHers95/portfolio-auth-api/actions/workflows/ci.yml/badge.svg)
 
 A REST API built with **FastAPI**, featuring JWT-based authentication and a PostgreSQL database, developed as part of a backend developer portfolio.
 
