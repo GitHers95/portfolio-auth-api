@@ -7,22 +7,22 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from app.database import Base, engine
 from app.routes import auth, products
 
-# Créer les tables au démarrage
 Base.metadata.create_all(bind=engine)
 
-# Créer l'application FastAPI
 app = FastAPI(
     title="Portfolio Auth API",
     description="API REST avec authentification JWT — Projet 1",
     version="1.0.0",
 )
 
-# --- Middleware d'authentification basique ---
+
 class BasicAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        # Exclure les routes de documentation du middleware
-        if request.url.path in ["/docs", "/openapi.json", "/redoc", "/docs/oauth2-redirect"]:
+        # Exclure les routes de documentation (avec ou sans préfixe /api)
+        excluded_suffixes = ["/docs", "/openapi.json", "/redoc", "/docs/oauth2-redirect"]
+        if any(request.url.path.endswith(suffix) for suffix in excluded_suffixes):
             return await call_next(request)
+
         valid_username = os.getenv("BASIC_AUTH_USERNAME", "admin")
         valid_password = os.getenv("BASIC_AUTH_PASSWORD", "password")
 
@@ -51,19 +51,18 @@ class BasicAuthMiddleware(BaseHTTPMiddleware):
                 headers={"WWW-Authenticate": "Basic"},
             )
 
-# Ajouter le middleware à l'application
+
 app.add_middleware(BasicAuthMiddleware)
 
-# Enregistrer les routes
 app.include_router(auth.router)
 app.include_router(products.router)
 
-# Route racine
+
 @app.get("/")
 def root():
     return {"message": "API en ligne"}
 
-# Route de santé
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "API opérationnelle"}

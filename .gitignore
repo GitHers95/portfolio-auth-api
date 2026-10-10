@@ -1,6 +1,22 @@
-venv/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+venv/
+env/
+ENV/
+
+# Secrets
 .env
+.env.backup
+
+# Fichiers volumineux
+*.deb
+*.sql
+*.pdf
+
+# IDE
 .vscode/
-*.db
+.idea/
+
+# Dossiers temporaires
+portfolio-auth-api/

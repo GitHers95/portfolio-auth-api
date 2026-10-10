@@ -29,7 +29,7 @@ services:
       - .env
     volumes:
       - ./app:/app/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --root-path /api
     restart: unless-stopped
     networks:
       - app-network
@@ -42,6 +42,20 @@ services:
     networks:
       - app-network
     restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - adminer
+    restart: unless-stopped
+    networks:
+      - app-network
 
 networks:
   app-network:
